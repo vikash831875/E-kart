@@ -1,0 +1,57 @@
+# dependencies
+node_modules/
+
+# environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# runtime files
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# build folders
+dist/
+build/
+
+# cache
+.cache/
+.parcel-cache/
+
+# coverage
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# editor files
+.vscode/
+.idea/
+
+# uploads
+uploads/
+
+# temp files
+tmp/
+temp/
+
+# vite
+vite.svg
+
+# next.js
+.next/
+
+# misc
+*.zip
