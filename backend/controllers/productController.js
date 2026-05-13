@@ -70,17 +70,76 @@ export const addProduct = async (req, res) => {
 // ================= GET ALL =================
 export const getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find();
+    const { search, category, brand, minPrice, maxPrice } = req.query;
+    const filter = {};
+
+    if (search) {
+      const regex = new RegExp(search, "i");
+      filter.$or = [
+        { productName: regex },
+        { productDesc: regex },
+        { category: regex },
+        { brand: regex },
+      ];
+    }
+
+    if (category) {
+      filter.category = category;
+    }
+
+    if (brand) {
+      filter.brand = brand;
+    }
+
+    if (minPrice || maxPrice) {
+      filter.productPrice = {};
+      if (minPrice) filter.productPrice.$gte = Number(minPrice);
+      if (maxPrice) filter.productPrice.$lte = Number(maxPrice);
+    }
+
+    const products = await Product.find(filter);
 
     return res.status(200).json({
       success: true,
-      products
+      products,
     });
 
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
+    });
+  }
+};
+
+export const getProductById = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    if (!productId) {
+      return res.status(400).json({
+        success: false,
+        message: "Product id is required",
+      });
+    }
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      product,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
     });
   }
 };

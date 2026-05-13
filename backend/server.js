@@ -6,6 +6,7 @@ import productRoute from './routes/productRoute.js'
 import cartRoute from './routes/cartRoute.js'
 import cors from "cors"
 import paymentRoute from "./routes/paymentRoute.js";
+import orderRoute from "./routes/orderRoute.js";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(
   "/api/v1/payment",
   paymentRoute
 );
+app.use("/api/v1/order", orderRoute);
 
 app.listen(PORT,()=>{
     connectDB();

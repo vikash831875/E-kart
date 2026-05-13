@@ -2,7 +2,7 @@ import express from "express";
 
 import {  isAuthenticated } from "../middleware/isAuthenticated.js";
 
-import { addToCart, getCart, removeFromCart, updateQuantity } from "../controllers/cartController.js";
+import { addToCart, getCart, removeFromCart, updateQuantity, clearCart } from "../controllers/cartController.js";
 
 const router = express.Router();
 
@@ -12,4 +12,5 @@ router.post('/add', isAuthenticated, addToCart);
 router.put('/update', isAuthenticated, updateQuantity);
 
 router.delete('/remove', isAuthenticated, removeFromCart)
+router.delete('/clear', isAuthenticated, clearCart)
 export default router;

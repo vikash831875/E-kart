@@ -180,3 +180,21 @@ export const removeFromCart = async (req, res) => {
         });
     }
 };
+
+export const clearCart = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        await Cart.findOneAndDelete({ userId });
+
+        res.status(200).json({
+            success: true,
+            message: "Cart cleared",
+            cart: { items: [], totalPrice: 0 }
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
