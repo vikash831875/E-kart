@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from './ui/button';
 import { ShoppingCart } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
@@ -10,10 +10,18 @@ import { toast } from 'sonner';
 
 const ProductCard = ({ product, loading }) => {
 
-  const { productImg, productPrice, productName, productDesc } = product || {};
+  const { productImg, productPrice, productName, productDesc, images, thumbnail } = product || {};
+  const [imageError, setImageError] = useState(false);
   const accessToken = localStorage.getItem('accessToken');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Get primary image with multiple fallbacks
+  const imageUrl = 
+    images?.[0] || 
+    thumbnail || 
+    productImg?.[0]?.url || 
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80';
 
   const addToCart = async(productId)=>{
     try {
@@ -33,19 +41,39 @@ const ProductCard = ({ product, loading }) => {
     }
   }
 
+  const handleImageError = () => {
+    setImageError(true);
+    console.warn(`Failed to load image for product: ${productName}`);
+  };
+
   return (
     <div className='shadow-lg rounded-lg overflow-hidden h-max'>
       
-      <div className='w-full h-full aspect-square overflow-hidden'>
+      <div className='w-full h-full aspect-square overflow-hidden relative bg-gray-100'>
         {
           loading
             ? <Skeleton className='w-full h-full rounded-lg' />
-            : <img
-            onClick={()=>navigate(`/products/${product._id}`)}
-                src={productImg?.[0]?.url}
-                alt=""
-                className='w-full h-full transform duration-300 hover:scale-105'
-              />
+            : (
+              <>
+                <img
+                  onClick={()=>navigate(`/products/${product._id}`)}
+                  src={imageError ? 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80' : imageUrl}
+                  alt={productName || "Product image"}
+                  onError={handleImageError}
+                  className='w-full h-full transform duration-300 hover:scale-105 object-cover'
+                />
+                {imageError && (
+                  <div className='absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50'>
+                    <div className='text-center'>
+                      <svg className='w-8 h-8 text-gray-400 mx-auto mb-1' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                        <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' />
+                      </svg>
+                      <p className='text-xs text-gray-500'>Image unavailable</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            )
         }
       </div>
 

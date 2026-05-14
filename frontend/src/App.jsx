@@ -30,6 +30,7 @@ import AdminOrder from "./pages/admin/AdminOrder";
 import ShowUserOrders from "./pages/admin/ShowUserOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
 import UserInfo from "./pages/admin/UserInfo";
+import OrderDetail from "./pages/admin/OrderDetail";
 
 const router = createBrowserRouter([
   // HOME
@@ -168,6 +169,11 @@ const router = createBrowserRouter([
 
     children: [
       {
+        index: true,
+        element: <AdminSales />,
+      },
+
+      {
         path: "sales",
         element: <AdminSales />,
       },
@@ -188,7 +194,12 @@ const router = createBrowserRouter([
       },
 
       {
-        path: "users/orders/:userId",
+        path: "orders/detail/:orderId",
+        element: <OrderDetail />,
+      },
+
+      {
+        path: "orders/:userId",
         element: <ShowUserOrders />,
       },
 

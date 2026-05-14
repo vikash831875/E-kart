@@ -6,8 +6,16 @@ const productSchema = new mongoose.Schema({
         ref:"User"
     },
     productName:{type:String, required:true},
+    shortDescription:{type:String},
+    fullDescription:{type:String},
     productDesc:{type:String, required:true},
-
+    productPrice:{type:Number},
+    price:{type:Number},
+    originalPrice:{type:Number},
+    discountPercentage:{type:Number},
+    stock:{type:Number, default:0},
+    thumbnail:{type:String},
+    images:[String],
     productImg:[
         {
             url:{type:String, required:true},
@@ -15,8 +23,15 @@ const productSchema = new mongoose.Schema({
 
         }
     ],
-
-    productPrice:{type:Number},
+    rating:{type:Number, default:4.5},
+    numReviews:{type:Number, default:0},
+    specifications:[
+      {
+        label:{type:String},
+        value:{type:String}
+      }
+    ],
+    featured:{type:Boolean, default:false},
     category:{type:String},
     brand:{type:String}
 
