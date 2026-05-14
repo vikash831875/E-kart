@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 
 const DashBoard = () => {
   return (
-    <div className='flex'>
+    <div className='flex '>
       <Sidebar/>
       <div className='flex-1'>
      <Outlet/>
